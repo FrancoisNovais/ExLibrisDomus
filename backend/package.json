@@ -1,0 +1,20 @@
+{
+  "name": "exlibrisdomus",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "François",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
