@@ -87,3 +87,9 @@
 - Index sur Auteur.nom (recherche par auteur)
 - Index sur Emprunt.statut (filtrage par statut)
 - Index sur Emprunt.date_emprunt (tri chronologique)
+
+---
+
+## Version schématique
+
+![MLD](mld.png)
