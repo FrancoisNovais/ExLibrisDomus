@@ -1,6 +1,23 @@
 import sequelize from "./sequelize.client.js";
 import { DataTypes, Model } from "sequelize";
 
+/**
+ * A Book
+ * @typedef {object} Book
+ * @property {string} title.required - Book title
+ * @property {integer} year - Year of publication
+ * @property {integer} pages - Number of pages
+ * @property {string} language - Language of the book
+ * @property {integer} rating - Rating from 1 to 5
+ * @property {string} cover - URL of the book cover
+ * @property {boolean} favorite - Whether the book is a favorite (default: false)
+ * @property {string} synopsis - Short summary of the book
+ * @property {string} analysis - Detailed analysis
+ * @property {boolean} read - Whether the book has been read (default: false)
+ * @property {string} created_at - Creation date (ISO string)
+ * @property {string} updated_at - Last update date (ISO string)
+ */
+
 class Book extends Model {}
 
 Book.init(
