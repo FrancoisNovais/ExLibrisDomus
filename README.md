@@ -34,7 +34,7 @@ ExLibrisDomus
 │   └── routes
 │       ├── book.routes.js
 │       └── index.js
-├── docker-compose.yml
+├── docker-compose.postgres.yml
 ├── docs
 │   ├── endpoints.md
 │   ├── mcd.md
@@ -92,7 +92,7 @@ POSTGRES_DB=<votre_base>
 Depuis la racine du projet :
 
 ```bash
-docker-compose up -d
+docker-compose -f docker-compose.postgres.yml up -d
 ```
 
 * Le conteneur PostgreSQL sera accessible sur `localhost:5432`.
@@ -113,7 +113,7 @@ docker exec -it exlibrisdomus-db psql -U <votre_utilisateur> -d <votre_base>
 1. Créer les tables :
 
 ```bash
-npm run db:migrate
+npm run db:create
 ```
 
 2. Seed les données :
@@ -123,6 +123,12 @@ npm run db:seed
 ```
 
 > Cela ajoutera des auteurs, étagères, genres et livres d’exemple dans la base.
+
+3. Pour reset la base de données (créer + seed) :
+
+```bash
+npm run db:reset
+```
 
 ## Lancer le serveur backend
 
@@ -138,3 +144,4 @@ npm start
 * La structure des modèles et relations se trouve dans `backend/models/`.
 * Les migrations et seeds sont dans `backend/migrations/`.
 * Les routes et controllers sont organisés dans `backend/routes/` et `backend/controllers/`.
+
