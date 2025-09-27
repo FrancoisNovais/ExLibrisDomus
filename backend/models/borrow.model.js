@@ -11,8 +11,6 @@ Borrow.init(
     },
     borrow_date: { type: DataTypes.DATE, allowNull: false },
     return_date: { type: DataTypes.DATE },
-    created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-    updated_at: { type: DataTypes.DATE },
   },
   { sequelize, tableName: "borrow" }
 );

@@ -5,17 +5,18 @@ import { DataTypes, Model } from "sequelize";
  * A Book
  * @typedef {object} Book
  * @property {string} title.required - Book title
- * @property {integer} year - Year of publication
- * @property {integer} pages - Number of pages
- * @property {string} language - Language of the book
+ * @property {integer} year - Year of publication (e.g. 1999)
+ * @property {integer} pages - Number of pages (must be positive)
+ * @property {string} language - Language of the book (e.g. "English", "French")
  * @property {integer} rating - Rating from 1 to 5
- * @property {string} cover - URL of the book cover
+ * @property {string} cover - URL of the book cover (must be a valid URI)
  * @property {boolean} favorite - Whether the book is a favorite (default: false)
  * @property {string} synopsis - Short summary of the book
- * @property {string} analysis - Detailed analysis
+ * @property {string} analysis - Detailed analysis or review
  * @property {boolean} read - Whether the book has been read (default: false)
- * @property {string} created_at - Creation date (ISO string)
- * @property {string} updated_at - Last update date (ISO string)
+ * @property {integer} id_author - Foreign key referencing the author
+ * @property {integer} id_shelf - Foreign key referencing the shelf
+ * @property {integer} id_genre - Foreign key referencing the genre
  */
 
 class Book extends Model {}
@@ -58,13 +59,6 @@ Book.init(
     read: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
     },
   },
   {

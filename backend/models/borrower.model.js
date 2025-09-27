@@ -9,8 +9,6 @@ Borrower.init(
     last_name: { type: DataTypes.TEXT, allowNull: false },
     first_name: { type: DataTypes.TEXT },
     phone: { type: DataTypes.TEXT },
-    created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-    updated_at: { type: DataTypes.DATE },
   },
   { sequelize, tableName: "borrower" }
 );
