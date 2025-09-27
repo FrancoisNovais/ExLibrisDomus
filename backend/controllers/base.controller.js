@@ -1,3 +1,6 @@
+import HTTPError from "../errors/httpError.js";
+import { StatusCodes } from "http-status-codes";
+
 export default class BaseController {
   constructor(model, modelName) {
     this.model = model;
