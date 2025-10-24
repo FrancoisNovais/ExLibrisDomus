@@ -73,3 +73,7 @@ Accept: application/json
 ### Get all shelves
 GET http://localhost:4000/api/shelves
 Accept: application/json
+
+### Get shelf by id
+GET http://localhost:4000/api/shelves/1
+Accept: application/json
