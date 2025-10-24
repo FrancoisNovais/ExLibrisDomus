@@ -2,7 +2,7 @@ import { Router } from "express";
 import shelfController from "../controllers/shelf.controller.js";
 import validateSchema from "../middlewares/validate.js";
 import { paramsSchema } from "../validation/global.schemas.js";
-import { createShelfSchema } from "../validation/shelf.schemas.js";
+import { createShelfSchema, updateShelfSchema } from "../validation/shelf.schemas.js";
 
 const router = Router();
 
@@ -43,5 +43,22 @@ router.post(
     validateSchema(createShelfSchema, "body"),
     shelfController.create.bind(shelfController)
 )
+
+/**
+ * PATCH /api/shelves/{itemId}
+  * @summary Mettre à jour une étagère existante
+  * @tags Shelf
+  * @param {string} itemId.path.required - ID de l'auteur
+  * @param {Shelf} request.body.required - Champs à mettre à jour
+  * @return {Shelf} 200 - Auteur mis à jour
+  * @return {object} 400 - Erreur de validation
+  * @return {object} 404 - Auteur non trouvé
+ */
+router.patch(
+  "/:itemId",
+  validateSchema(paramsSchema, "params"),
+  validateSchema(updateShelfSchema, "body"),
+  shelfController.updateById.bind(shelfController)
+);
 
 export default router;
