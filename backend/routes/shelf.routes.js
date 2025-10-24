@@ -48,11 +48,11 @@ router.post(
  * PATCH /api/shelves/{itemId}
   * @summary Mettre à jour une étagère existante
   * @tags Shelf
-  * @param {string} itemId.path.required - ID de l'auteur
+  * @param {string} itemId.path.required - ID de l'étagère
   * @param {Shelf} request.body.required - Champs à mettre à jour
-  * @return {Shelf} 200 - Auteur mis à jour
+  * @return {Shelf} 200 - Etagère mis à jour
   * @return {object} 400 - Erreur de validation
-  * @return {object} 404 - Auteur non trouvé
+  * @return {object} 404 - Etagère non trouvé
  */
 router.patch(
   "/:itemId",
@@ -64,9 +64,9 @@ router.patch(
 /** DELETE /api/shelves/{itemId}
  * @summary Supprimer une étagère par son ID
  * @tags Shelf
- * @param {string} itemId.path.required - ID de l'auteur
- * @return {object} 204 - Auteur supprimé
- * @return {object} 404 - Auteur non trouvé
+ * @param {string} itemId.path.required - ID de l'étagère
+ * @return {object} 204 - Etagère supprimé
+ * @return {object} 404 - Etagère non trouvé
  */
 router.delete(
     "/:itemId",
