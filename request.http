@@ -52,16 +52,20 @@ Content-Type: application/json
 Accept: application/json  
 
 {
-  "last_name": "Tolkien",
   "first_name": "J.R.R.",
+  "last_name": "Tolkien",
   "birth_date": "1892-01-03"
 }
 
 ### Update an author
-PATCH http://localhost:4000/api/authors/12
+PATCH http://localhost:4000/api/authors/11
 Content-Type: application/json
 Accept: application/json  
 
 {
   "first_name": "John Ronald Reuel"
 }
+
+### Delete an author
+DELETE http://localhost:4000/api/authors/11
+Accept: application/json

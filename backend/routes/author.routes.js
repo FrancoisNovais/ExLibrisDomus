@@ -61,4 +61,17 @@ router.patch(
   authorController.updateById.bind(authorController)
 );
 
+/** DELETE /api/authors/{itemId}
+ * @summary Supprimer un auteur par son ID
+ * @tags Author
+ * @param {string} itemId.path.required - ID de l'auteur
+ * @return {object} 204 - Auteur supprimé
+ * @return {object} 404 - Auteur non trouvé
+ */
+router.delete(
+    "/:itemId",
+    validateSchema(paramsSchema, "params"),
+    authorController.deleteById.bind(authorController)
+);
+
 export default router;
