@@ -69,3 +69,33 @@ Accept: application/json
 ### Delete an author
 DELETE http://localhost:4000/api/authors/11
 Accept: application/json
+
+### Get all shelves
+GET http://localhost:4000/api/shelves
+Accept: application/json
+
+### Get shelf by id
+GET http://localhost:4000/api/shelves/1
+Accept: application/json
+
+### Create a new shelf
+POST http://localhost:4000/api/shelves
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "label": "Biographies"
+}
+
+### Update a shelf
+PATCH  http://localhost:4000/api/shelves/6
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "label": "Horror"
+}
+
+### Delete a shelf
+DELETE http://localhost:4000/api/shelves/6
+Accept: application/json
