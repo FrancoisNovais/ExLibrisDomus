@@ -88,10 +88,14 @@ Accept: application/json
 }
 
 ### Update a shelf
-PATCH  http://localhost:4000/api/shelves/66
+PATCH  http://localhost:4000/api/shelves/6
 Content-Type: application/json
 Accept: application/json  
 
 {
   "label": "Horror"
 }
+
+### Delete a shelf
+DELETE http://localhost:4000/api/shelves/6
+Accept: application/json

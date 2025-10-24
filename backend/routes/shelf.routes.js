@@ -61,4 +61,17 @@ router.patch(
   shelfController.updateById.bind(shelfController)
 );
 
+/** DELETE /api/shelves/{itemId}
+ * @summary Supprimer une étagère par son ID
+ * @tags Shelf
+ * @param {string} itemId.path.required - ID de l'auteur
+ * @return {object} 204 - Auteur supprimé
+ * @return {object} 404 - Auteur non trouvé
+ */
+router.delete(
+    "/:itemId",
+    validateSchema(paramsSchema, "params"),
+    shelfController.deleteById.bind(shelfController)
+);
+
 export default router;
