@@ -2,6 +2,7 @@ import { Router } from "express";
 import genreController from "../controllers/genre.controller.js";
 import { paramsSchema } from "../validation/global.schemas.js";
 import validateSchema from "../middlewares/validate.js";
+import { createGenreSchema } from "../validation/genre.schemas.js";
 
 const router = Router();
 
@@ -29,5 +30,18 @@ router.get(
   validateSchema(paramsSchema, "params"),
   genreController.getById.bind(genreController)
 );
+
+/** * POST /api/genres
+ * @summary Créer un nouveau genre
+ * @tags Genre
+ * @param {Genre} request.body.required - Données du genre
+ * @return {Genre} 201 - Genre créé
+ * @return {object} 400 - Erreur de validation
+ */
+router.post(
+    "/",
+    validateSchema(createGenreSchema, "body"),
+    genreController.create.bind(genreController)
+)
 
 export default router;
