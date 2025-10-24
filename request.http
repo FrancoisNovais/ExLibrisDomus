@@ -77,3 +77,12 @@ Accept: application/json
 ### Get shelf by id
 GET http://localhost:4000/api/shelves/1
 Accept: application/json
+
+### Create a new shelf
+POST http://localhost:4000/api/shelves
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "label": "Biographies"
+}

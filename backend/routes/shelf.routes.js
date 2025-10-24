@@ -2,13 +2,14 @@ import { Router } from "express";
 import shelfController from "../controllers/shelf.controller.js";
 import validateSchema from "../middlewares/validate.js";
 import { paramsSchema } from "../validation/global.schemas.js";
+import { createShelfSchema } from "../validation/shelf.schemas.js";
 
 const router = Router();
 
 /**
  * GET /api/shelves
  * @summary Récupérer tous les étagères
- * @tags shelf
+ * @tags Shelf
  * @return {array<Shelf>} 200 - Liste de toutes les étagères
  */
 router.get(
@@ -29,5 +30,18 @@ router.get(
   validateSchema(paramsSchema, "params"),
   shelfController.getById.bind(shelfController)
 );
+
+/** * POST /api/shelves
+ * @summary Créer une nouvelle étagère
+ * @tags Shelf
+ * @param {Shelf} request.body.required - Données de l'étagère
+ * @return {Shelf} 201 - Etagère créé
+ * @return {object} 400 - Erreur de validation
+ */
+router.post(
+    "/",
+    validateSchema(createShelfSchema, "body"),
+    shelfController.create.bind(shelfController)
+)
 
 export default router;
