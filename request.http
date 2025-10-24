@@ -69,3 +69,7 @@ Accept: application/json
 ### Delete an author
 DELETE http://localhost:4000/api/authors/11
 Accept: application/json
+
+### Get all shelves
+GET http://localhost:4000/api/shelves
+Accept: application/json
