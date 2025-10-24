@@ -157,3 +157,7 @@ Accept: application/json
   "email": "johndoe@mail.com",
   "first_name": "John"
 }
+
+### Delete a borrower
+DELETE http://localhost:4000/api/borrowers/1
+Accept: application/json

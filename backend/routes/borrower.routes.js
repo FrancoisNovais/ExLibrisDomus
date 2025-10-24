@@ -62,6 +62,21 @@ router.patch(
   borrowerController.updateById.bind(borrowerController)
 );
 
+/**
+ * DELETE /api/borrowers/{borrowerId}
+ * @summary Supprimer un emprunteur
+ * @tags Borrower
+ * @param {string} itemId.path.required - ID de l'emprunteur
+ * @return {object} 204 - Emprunteur supprimé avec succès
+ * @return {object} 404 - Emprunteur non trouvé
+ */
+router.delete(
+  "/:itemId",
+  validateSchema(paramsSchema, "params"),
+  borrowerController.deleteById.bind(borrowerController)
+);
+
+
 
 export default router;
  
