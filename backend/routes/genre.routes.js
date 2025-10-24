@@ -57,8 +57,21 @@ router.post(
 router.patch(
   "/:itemId",
   validateSchema(paramsSchema, "params"),
-  validateSchema(updateGenreSchema, "body"),
+  validateSchema(updateGenreSchema , "body"),
   genreController.updateById.bind(genreController)
+);
+
+/** DELETE /api/genres/{itemId}
+ * @summary Supprimer un genre par son ID
+ * @tags Genre
+ * @param {string} itemId.path.required - ID du genre
+ * @return {object} 204 - Genre supprimé
+ * @return {object} 404 - Genre non trouvé
+ */
+router.delete(
+    "/:itemId",
+    validateSchema(paramsSchema, "params"),
+    genreController.deleteById.bind(genreController)
 );
 
 export default router;
