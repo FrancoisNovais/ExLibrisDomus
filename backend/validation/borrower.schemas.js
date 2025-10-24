@@ -7,3 +7,9 @@ export const createBorrowerSchema = Joi.object({
     phone: Joi.string(),
 });
 
+export const updateBorrowerSchema = Joi.object({
+    email: Joi.string(),
+    last_name: Joi.string(),
+    first_name: Joi.string(),
+    phone: Joi.string(),
+}).min(1);

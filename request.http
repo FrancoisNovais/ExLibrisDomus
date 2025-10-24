@@ -145,5 +145,15 @@ Accept: application/json
 
 {
   "email": "johndoe@mail.com",
-  "last_name": "john"
+  "last_name": "Doe"
+}
+
+### Update a borrower
+PATCH  http://localhost:4000/api/borrowers/1
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "email": "johndoe@mail.com",
+  "first_name": "John"
 }
