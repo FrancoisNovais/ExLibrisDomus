@@ -116,3 +116,12 @@ Accept: application/json
 {
   "category": "Biographies"
 }
+
+### Update a genre
+PAtch http://localhost:4000/api/genres/6
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "category": "Horror"
+}

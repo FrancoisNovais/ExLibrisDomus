@@ -2,7 +2,7 @@ import { Router } from "express";
 import genreController from "../controllers/genre.controller.js";
 import { paramsSchema } from "../validation/global.schemas.js";
 import validateSchema from "../middlewares/validate.js";
-import { createGenreSchema } from "../validation/genre.schemas.js";
+import { createGenreSchema, updateGenreSchema } from "../validation/genre.schemas.js";
 
 const router = Router();
 
@@ -43,5 +43,22 @@ router.post(
     validateSchema(createGenreSchema, "body"),
     genreController.create.bind(genreController)
 )
+
+/**
+ * PATCH /api/genres/{itemId}
+  * @summary Mettre à jour un genre
+  * @tags Genre
+  * @param {string} itemId.path.required - ID du genre
+  * @param {Genre} request.body.required - Champs à mettre à jour
+  * @return {Genre} 200 - Genre mis à jour
+  * @return {object} 400 - Erreur de validation
+  * @return {object} 404 - Genre non trouvé
+ */
+router.patch(
+  "/:itemId",
+  validateSchema(paramsSchema, "params"),
+  validateSchema(updateGenreSchema, "body"),
+  genreController.updateById.bind(genreController)
+);
 
 export default router;
