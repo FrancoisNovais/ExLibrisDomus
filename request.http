@@ -45,3 +45,14 @@ Accept: application/json
 ### Get author by id
 GET http://localhost:4000/api/authors/1
 Accept: application/json
+
+### Create a new author
+POST http://localhost:4000/api/authors
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "last_name": "Tolkien",
+  "first_name": "J.R.R.",
+  "birth_date": "1892-01-03"
+}

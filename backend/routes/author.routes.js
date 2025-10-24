@@ -2,6 +2,7 @@ import { Router } from "express";
 import authorController from "../controllers/author.controller.js";
 import validateSchema from "../middlewares/validate.js";
 import { paramsSchema } from "../validation/global.schemas.js";
+import { createAuthorSchema } from "../validation/author.schemas.js";
 
 const router = Router();
 
@@ -29,5 +30,18 @@ router.get(
   validateSchema(paramsSchema, "params"),
   authorController.getById.bind(authorController)
 );
+
+/** * POST /api/authors
+ * @summary Créer un nouvel auteur
+ * @tags Author
+ * @param {Author} request.body.required - Données de l'auteur
+ * @return {Author} 201 - Auteur créé
+ * @return {object} 400 - Erreur de validation
+ */
+router.post(
+    "/",
+    validateSchema(createAuthorSchema, "body"),
+    authorController.create.bind(authorController)
+)
 
 export default router;
