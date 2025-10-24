@@ -17,6 +17,7 @@
     "express": "^5.1.0",
     "express-jsdoc-swagger": "^1.8.0",
     "http-status-codes": "^2.3.0",
+    "joi": "^18.0.1",
     "pg": "^8.16.3",
     "sequelize": "^6.37.7"
   },

@@ -1,6 +1,14 @@
 import sequelize from "./sequelize.client.js";
 import { DataTypes, Model } from "sequelize";
 
+/**
+ * An Author
+ * @typedef {object} Author
+ * @property {string} first_name - First name of the author
+ * @property {string} last_name.required - Last name of the author
+ * @property {string} birth_date - Birth date of the author (e.g. "1970-01-01")
+ */
+
 class Author extends Model {}
 
 Author.init(
