@@ -118,7 +118,7 @@ Accept: application/json
 }
 
 ### Update a genre
-PAtch http://localhost:4000/api/genres/6
+PATCH http://localhost:4000/api/genres/6
 Content-Type: application/json
 Accept: application/json  
 
@@ -128,4 +128,8 @@ Accept: application/json
 
 ### Delete a genre
 DELETE http://localhost:4000/api/genres/6
+Accept: application/json
+
+### Get all borrowers
+GET http://localhost:4000/api/borrowers
 Accept: application/json
