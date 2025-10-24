@@ -56,3 +56,12 @@ Accept: application/json
   "first_name": "J.R.R.",
   "birth_date": "1892-01-03"
 }
+
+### Update an author
+PATCH http://localhost:4000/api/authors/12
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "first_name": "John Ronald Reuel"
+}

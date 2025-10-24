@@ -2,7 +2,7 @@ import { Router } from "express";
 import authorController from "../controllers/author.controller.js";
 import validateSchema from "../middlewares/validate.js";
 import { paramsSchema } from "../validation/global.schemas.js";
-import { createAuthorSchema } from "../validation/author.schemas.js";
+import { createAuthorSchema, updateAuthorSchema } from "../validation/author.schemas.js";
 
 const router = Router();
 
@@ -43,5 +43,22 @@ router.post(
     validateSchema(createAuthorSchema, "body"),
     authorController.create.bind(authorController)
 )
+
+/**
+ * PATCH /api/authors/{itemId}
+  * @summary Mettre à jour un auteur existant
+  * @tags Author
+  * @param {string} itemId.path.required - ID de l'auteur
+  * @param {Author} request.body.required - Champs à mettre à jour
+  * @return {Author} 200 - Auteur mis à jour
+  * @return {object} 400 - Erreur de validation
+  * @return {object} 404 - Auteur non trouvé
+ */
+router.patch(
+  "/:itemId",
+  validateSchema(paramsSchema, "params"),
+  validateSchema(updateAuthorSchema, "body"),
+  authorController.updateById.bind(authorController)
+);
 
 export default router;
