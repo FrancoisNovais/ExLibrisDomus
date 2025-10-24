@@ -118,7 +118,7 @@ Accept: application/json
 }
 
 ### Update a genre
-PAtch http://localhost:4000/api/genres/6
+PATCH http://localhost:4000/api/genres/6
 Content-Type: application/json
 Accept: application/json  
 
@@ -128,4 +128,36 @@ Accept: application/json
 
 ### Delete a genre
 DELETE http://localhost:4000/api/genres/6
+Accept: application/json
+
+### Get all borrowers
+GET http://localhost:4000/api/borrowers
+Accept: application/json
+
+### Get borrower by id
+GET http://localhost:4000/api/borrowers/1
+Accept: application/json
+
+### Create a new borrower
+POST http://localhost:4000/api/borrowers
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "email": "johndoe@mail.com",
+  "last_name": "Doe"
+}
+
+### Update a borrower
+PATCH  http://localhost:4000/api/borrowers/1
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "email": "johndoe@mail.com",
+  "first_name": "John"
+}
+
+### Delete a borrower
+DELETE http://localhost:4000/api/borrowers/1
 Accept: application/json
