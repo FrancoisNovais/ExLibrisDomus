@@ -99,3 +99,7 @@ Accept: application/json
 ### Delete a shelf
 DELETE http://localhost:4000/api/shelves/6
 Accept: application/json
+
+### Get all genres
+GET http://localhost:4000/api/genres
+Accept: application/json
