@@ -1,0 +1,38 @@
+ ▗▄▄▖▗▖ ▗▖▗▄▄▄▖▗▖  ▗▖  ▗▖▗▄▄▄▖ ▗▄▄▖
+▐▌   ▐▌ ▐▌▐▌   ▐▌  ▐▌  ▐▌▐▌   ▐▌   
+ ▝▀▚▖▐▛▀▜▌▐▛▀▀▘▐▌  ▐▌  ▐▌▐▛▀▀▘ ▝▀▚▖
+▗▄▄▞▘▐▌ ▐▌▐▙▄▄▖▐▙▄▄▖▝▚▞▘ ▐▙▄▄▖▗▄▄▞▘
+                                   
+                                   
+                                   
+@baseUrl = http://localhost:4000/api
+
+### Get all shelves
+GET {{baseUrl}}/shelves
+Accept: application/json
+
+### Get shelf by id
+GET {{baseUrl}}/shelves/1
+Accept: application/json
+
+### Create a new shelf
+POST {{baseUrl}}/shelves
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "label": "Biographies"
+}
+
+### Update a shelf
+PATCH  {{baseUrl}}/shelves/6
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "label": "Horror"
+}
+
+### Delete a shelf
+DELETE {{baseUrl}}/shelves/6
+Accept: application/json

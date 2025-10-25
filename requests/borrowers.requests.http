@@ -1,0 +1,40 @@
+▗▄▄▖  ▗▄▖ ▗▄▄▖ ▗▄▄▖  ▗▄▖ ▗▖ ▗▖▗▄▄▄▖▗▄▄▖  ▗▄▄▖
+▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌ ▐▌▐▌   
+▐▛▀▚▖▐▌ ▐▌▐▛▀▚▖▐▛▀▚▖▐▌ ▐▌▐▌ ▐▌▐▛▀▀▘▐▛▀▚▖ ▝▀▚▖
+▐▙▄▞▘▝▚▄▞▘▐▌ ▐▌▐▌ ▐▌▝▚▄▞▘▐▙█▟▌▐▙▄▄▖▐▌ ▐▌▗▄▄▞▘
+                                             
+                                             
+
+@baseUrl = http://localhost:4000/api
+
+### Get all borrowers
+GET {{baseUrl}}/borrowers
+Accept: application/json
+
+### Get borrower by id
+GET {{baseUrl}}/borrowers/1
+Accept: application/json
+
+### Create a new borrower
+POST {{baseUrl}}/borrowers
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "email": "johndoe@mail.com",
+  "last_name": "Doe"
+}
+
+### Update a borrower
+PATCH  {{baseUrl}}/borrowers/1
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "email": "johndoe@mail.com",
+  "first_name": "John"
+}
+
+### Delete a borrower
+DELETE {{baseUrl}}/borrowers/1
+Accept: application/json

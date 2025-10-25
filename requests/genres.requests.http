@@ -1,0 +1,38 @@
+ ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▖ ▗▄▄▄▖ ▗▄▄▖
+▐▌   ▐▌   ▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   
+▐▌▝▜▌▐▛▀▀▘▐▌ ▝▜▌▐▛▀▚▖▐▛▀▀▘ ▝▀▚▖
+▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▌ ▐▌▐▙▄▄▖▗▄▄▞▘
+                               
+                               
+                               
+@baseUrl = http://localhost:4000/api
+
+### Get all genres
+GET {{baseUrl}}/genres
+Accept: application/json
+
+### Get genre by id
+GET {{baseUrl}}/genres/1
+Accept: application/json
+
+### Create a new genre
+POST {{baseUrl}}/genres
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "category": "Biographies"
+}
+
+### Update a genre
+PATCH {{baseUrl}}/genres/6
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "category": "Horror"
+}
+
+### Delete a genre
+DELETE {{baseUrl}}/genres/6
+Accept: application/json
