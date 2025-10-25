@@ -1,0 +1,48 @@
+▗▄▄▖  ▗▄▖  ▗▄▖ ▗▖ ▗▖ ▗▄▄▖
+▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌▗▞▘▐▌   
+▐▛▀▚▖▐▌ ▐▌▐▌ ▐▌▐▛▚▖  ▝▀▚▖
+▐▙▄▞▘▝▚▄▞▘▝▚▄▞▘▐▌ ▐▌▗▄▄▞▘
+                         
+                         
+                         
+@baseUrl = http://localhost:4000/api
+
+### Get all books
+GET {{baseUrl}}/books
+Accept: application/json
+
+### Get book by ID
+GET {{baseUrl}}/books/1
+Accept: application/json
+
+### Create a new book
+POST {{baseUrl}}/books
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "Le Seigneur des Anneaux",
+  "year": 1954,
+  "pages": 1178,
+  "language": "fr",
+  "rating": 5,
+  "cover": "https://example.com/lotr.jpg",
+  "favorite": true,
+  "synopsis": "Une grande aventure en Terre du Milieu.",
+  "analysis": "Analyse détaillée du récit.",
+  "read": false
+}
+
+### Update a book
+PATCH {{baseUrl}}/books/12
+Content-Type: application/json
+Accept: application/json
+
+{
+  "rating": 4,
+  "read": true
+}
+
+### Delete a book
+DELETE {{baseUrl}}/books/12
+Accept: application/json
