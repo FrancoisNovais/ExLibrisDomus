@@ -24,3 +24,12 @@ Accept: application/json
     "content": "Lorem ipsum",
     "id_book": 1
 }
+
+### Update a  note
+PATCH {{baseUrl}}/notes/1
+Content-Type: application/json
+Accept: application/json  
+
+{
+    "id_book": 2
+}

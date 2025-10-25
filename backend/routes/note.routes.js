@@ -2,7 +2,7 @@ import { Router } from "express";
 import noteController from "../controllers/note.controller.js";
 import validateSchema from "../middlewares/validate.js";
 import { paramsSchema } from "../validation/global.schemas.js";
-import { createNoteSchema } from "../validation/note.schemas.js";
+import { createNoteSchema, updateNoteSchema } from "../validation/note.schemas.js";
 
 const router = Router();
 
@@ -44,6 +44,24 @@ router.post(
   validateSchema(createNoteSchema, "body"),
   noteController.create.bind(noteController)
 );
+
+/**
+ * PATCH /api/notes/{itemId}
+ * @summary Mettre à jour une note existante
+ * @tags Note
+ * @param {string} itemId.path.required - ID de la note
+ * @param {Note} request.body.required - Champs à mettre à jour
+ * @return {Note} 200 - Note mise à jour
+ * @return {object} 400 - Erreur de validation
+ * @return {object} 404 - Note non trouvée
+ */
+router.patch(
+  "/:itemId",
+  validateSchema(updateNoteSchema, "body"),
+  validateSchema(paramsSchema, "params"),
+  noteController.updateById.bind(noteController)
+);
+
 
 
 
