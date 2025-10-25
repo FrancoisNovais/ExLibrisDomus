@@ -33,12 +33,8 @@ export default class BaseController {
   };
 
   create = async function (req, res) {
-    try {
-      const newItem = await this.model.create(req.body);
-      res.json(newItem);
-    } catch (error) {
-      throw new HTTPError(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
-    }
+    const newItem = await this.model.create(req.body);
+    res.json(newItem);
   };
 
   deleteById = async function (req, res) {
