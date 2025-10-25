@@ -13,9 +13,19 @@ ExLibrisDomus
 │   ├── .env
 │   ├── .env.example
 │   ├── controllers
+│   │   ├── author.controller.js
 │   │   ├── base.controller.js
-│   │   └── book.controller.js
+│   │   ├── book.controller.js
+│   │   ├── borrower.controller.js
+│   │   ├── genre.controller.js
+│   │   └── shelf.controller.js
+│   ├── errors
+│   │   └── httpError.js
 │   ├── index.js
+│   ├── middlewares
+│   │   ├── error404.js
+│   │   ├── errorHandler.js
+│   │   └── validate.js
 │   ├── migrations
 │   │   ├── 01.create-tables.js
 │   │   └── 02.seed-tables.js
@@ -31,9 +41,20 @@ ExLibrisDomus
 │   │   └── shelf.model.js
 │   ├── package-lock.json
 │   ├── package.json
-│   └── routes
-│       ├── book.routes.js
-│       └── index.js
+│   ├── routes
+│   │   ├── author.routes.js
+│   │   ├── book.routes.js
+│   │   ├── borrower.routes.js
+│   │   ├── genre.routes.js
+│   │   ├── index.js
+│   │   └── shelf.routes.js
+│   └── validation
+│       ├── author.schemas.js
+│       ├── book.schemas.js
+│       ├── borrower.schemas.js
+│       ├── genre.schemas.js
+│       ├── global.schemas.js
+│       └── shelf.schemas.js
 ├── docker-compose.postgres.yml
 ├── docs
 │   ├── endpoints.md
@@ -133,7 +154,7 @@ npm run db:reset
 ## Lancer le serveur backend
 
 ```bash
-npm start
+npm run dev
 ```
 
 * Le serveur écoute sur le port défini dans `.env` (`PORT=4000` par défaut).
