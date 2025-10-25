@@ -33,3 +33,7 @@ Accept: application/json
 {
     "id_book": 2
 }
+
+### Delete a note
+DELETE {{baseUrl}}/notes/1
+Accept: application/json

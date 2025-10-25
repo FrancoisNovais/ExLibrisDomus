@@ -62,8 +62,19 @@ router.patch(
   noteController.updateById.bind(noteController)
 );
 
-
-
+/**
+ * DELETE /api/notes/{itemId}
+ * @summary Supprimer une note
+ * @tags Note
+ * @param {string} itemId.path.required - ID de la note
+ * @return {object} 204 - Note supprimée avec succès
+ * @return {object} 404 - Note non trouvée
+ */
+router.delete(
+  "/:itemId",
+  validateSchema(paramsSchema, "params"),
+  noteController.deleteById.bind(noteController)
+);
 
 export default router;
  
