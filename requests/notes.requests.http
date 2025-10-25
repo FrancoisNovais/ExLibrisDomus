@@ -6,6 +6,10 @@
 
 @baseUrl = http://localhost:4000/api
 
-### Get all borrowers
+### Get all note
 GET {{baseUrl}}/notes
+Accept: application/json
+
+### Get note by id
+GET {{baseUrl}}/notes/1
 Accept: application/json

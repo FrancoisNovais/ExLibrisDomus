@@ -4,7 +4,7 @@ import BaseController from "./base.controller.js";
 
 class NoteController extends BaseController {
   constructor() {
-    super(Note, "Emprunteur");
+    super(Note, "Note");
   }
 }
 
