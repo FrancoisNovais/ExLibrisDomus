@@ -1,0 +1,44 @@
+#                                     #
+# ▗▄▄▖  ▗▄▖ ▗▄▄▖ ▗▄▄▖  ▗▄▖ ▗▖ ▗▖ ▗▄▄▖ #
+# ▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌    #
+# ▐▛▀▚▖▐▌ ▐▌▐▛▀▚▖▐▛▀▚▖▐▌ ▐▌▐▌ ▐▌ ▝▀▚▖ #
+# ▐▙▄▞▘▝▚▄▞▘▐▌ ▐▌▐▌ ▐▌▝▚▄▞▘▐▙█▟▌▗▄▄▞▘ #
+#                                     #
+#                                     #
+
+@baseUrl = http://localhost:4000/api
+
+### Get all borrows
+GET {{baseUrl}}/borrows
+Accept: application/json
+
+### Get borrow by id
+GET {{baseUrl}}/borrows/1
+Accept: application/json
+
+### Create a new borrow
+POST {{baseUrl}}/borrows
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "status": "ongoing",
+  "borrow_date": "2025-10-26",
+  "return_date": null,
+  "id_book": 2,
+  "id_borrower": 1
+}
+
+### Update a new borrow
+PATCH {{baseUrl}}/borrows/1
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "status": "returned",
+  "return_date": "2025-10-30"
+}
+
+### Delete a borrow
+DELETE {{baseUrl}}/borrows/1
+Accept: application/json
