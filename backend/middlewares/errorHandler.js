@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 
 export default function errorHandler(err, _, res, __) {
-  // Statut par défaut
-  let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  // Utilise le code d’erreur défini ou 500 par défaut
+  let statusCode = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
   let message = err.errors?.[0]?.message || err.message;
 
   // Gestion spécifique des erreurs Sequelize
@@ -15,4 +15,3 @@ export default function errorHandler(err, _, res, __) {
   }
   res.status(statusCode).json({ message });
 }
- 
