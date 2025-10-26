@@ -9,6 +9,7 @@ ExLibrisDomus
 ├── .env
 ├── .env.exemple
 ├── .gitignore
+├── README.md
 ├── backend
 │   ├── .env
 │   ├── .env.example
@@ -16,8 +17,10 @@ ExLibrisDomus
 │   │   ├── author.controller.js
 │   │   ├── base.controller.js
 │   │   ├── book.controller.js
+│   │   ├── borrow.controller.js
 │   │   ├── borrower.controller.js
 │   │   ├── genre.controller.js
+│   │   ├── note.controller.js
 │   │   └── shelf.controller.js
 │   ├── errors
 │   │   └── httpError.js
@@ -25,7 +28,8 @@ ExLibrisDomus
 │   ├── middlewares
 │   │   ├── error404.js
 │   │   ├── errorHandler.js
-│   │   └── validate.js
+│   │   ├── validate.js
+│   │   └── validateBorrow.js
 │   ├── migrations
 │   │   ├── 01.create-tables.js
 │   │   └── 02.seed-tables.js
@@ -44,28 +48,38 @@ ExLibrisDomus
 │   ├── routes
 │   │   ├── author.routes.js
 │   │   ├── book.routes.js
+│   │   ├── borrow.routes.js
 │   │   ├── borrower.routes.js
 │   │   ├── genre.routes.js
 │   │   ├── index.js
+│   │   ├── note.routes.js
 │   │   └── shelf.routes.js
 │   └── validation
 │       ├── author.schemas.js
 │       ├── book.schemas.js
+│       ├── borrow.schemas.js
 │       ├── borrower.schemas.js
 │       ├── genre.schemas.js
 │       ├── global.schemas.js
+│       ├── note.schemas.js
 │       └── shelf.schemas.js
 ├── docker-compose.postgres.yml
 ├── docs
+│   ├── README.md
 │   ├── endpoints.md
 │   ├── mcd.md
 │   ├── mcd.png
 │   ├── mld.md
 │   ├── mld.png
-│   ├── mpd.sql
-│   └── README.md
-├── README.md
-└── request.http
+│   └── mpd.sql
+└── requests
+    ├── authors.requests.http
+    ├── books.requests.http
+    ├── borrow.requests.http
+    ├── borrowers.requests.http
+    ├── genres.requests.http
+    ├── notes.requests.http
+    └── shelves.requests.http
 ```
 
 ## Installation
