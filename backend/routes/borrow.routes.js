@@ -2,7 +2,8 @@ import { Router } from "express";
 import borrowController from "../controllers/borrow.controller.js";
 import validateSchema from "../middlewares/validate.js";
 import { paramsSchema } from "../validation/global.schemas.js";
-import { createBorrowSchema } from "../validation/borrow.schemas.js";
+import { createBorrowSchema, updateBorrowSchema } from "../validation/borrow.schemas.js";
+import validateBorrow from "../middlewares/validateBorrow.js";
 
 const router = Router();
 
@@ -42,7 +43,26 @@ router.get(
 router.post(
   "/",
   validateSchema(createBorrowSchema, "body"),
+  validateBorrow,
   borrowController.create.bind(borrowController)
+);
+
+/**
+ * PATCH /api/borrows/{itemId}
+ * @summary Mettre à jour un emprunt existant
+ * @tags Borrow
+ * @param {string} itemId.path.required - ID de l'emprunt
+ * @param {Borrow} request.body.required - Champs à mettre à jour
+ * @return {Borrow} 200 - Emprunt mis à jour
+ * @return {object} 400 - Erreur de validation
+ * @return {object} 404 - Emprunt non trouvé
+ */
+router.patch(
+  "/:itemId",
+  validateSchema(updateBorrowSchema, "body"),
+  validateSchema(paramsSchema, "params"),
+  validateBorrow,
+  borrowController.updateById.bind(borrowController)
 );
 
 export default router;

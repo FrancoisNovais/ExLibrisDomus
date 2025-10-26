@@ -28,3 +28,14 @@ Accept: application/json
   "id_book": 2,
   "id_borrower": 1
 }
+
+### Update a new borrow
+PATCH {{baseUrl}}/borrows/1
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "status": "returned",
+  "return_date": "2025-10-30"
+}
+
