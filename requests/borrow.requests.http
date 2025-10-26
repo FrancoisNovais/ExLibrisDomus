@@ -39,3 +39,6 @@ Accept: application/json
   "return_date": "2025-10-30"
 }
 
+### Delete a borrow
+DELETE {{baseUrl}}/borrows/1
+Accept: application/json
