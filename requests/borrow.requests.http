@@ -11,3 +11,7 @@
 ### Get all borrows
 GET {{baseUrl}}/borrows
 Accept: application/json
+
+### Get borrow by id
+GET {{baseUrl}}/borrows/1
+Accept: application/json
