@@ -2,6 +2,7 @@ import { Router } from "express";
 import borrowController from "../controllers/borrow.controller.js";
 import validateSchema from "../middlewares/validate.js";
 import { paramsSchema } from "../validation/global.schemas.js";
+import { createBorrowSchema } from "../validation/borrow.schemas.js";
 
 const router = Router();
 
@@ -28,6 +29,20 @@ router.get(
   "/:itemId",
   validateSchema(paramsSchema, "params"),
   borrowController.getById.bind(borrowController)
+);
+
+/**
+ * POST /api/borrows
+ * @summary Créer un nouveau emprunt
+ * @tags Borrow
+ * @param {Borrow} request.body.required - Données de l'emprunt
+ * @return {Borrow} 201 - Emprunt créé
+ * @return {object} 400 - Erreur de validation
+ */
+router.post(
+  "/",
+  validateSchema(createBorrowSchema, "body"),
+  borrowController.create.bind(borrowController)
 );
 
 export default router;

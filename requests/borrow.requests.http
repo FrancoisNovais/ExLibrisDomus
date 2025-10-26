@@ -15,3 +15,16 @@ Accept: application/json
 ### Get borrow by id
 GET {{baseUrl}}/borrows/1
 Accept: application/json
+
+### Create a new borrow
+POST {{baseUrl}}/borrows
+Content-Type: application/json
+Accept: application/json  
+
+{
+  "status": "ongoing",
+  "borrow_date": "2025-10-26",
+  "return_date": null,
+  "id_book": 2,
+  "id_borrower": 1
+}
