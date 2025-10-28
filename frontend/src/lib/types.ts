@@ -23,3 +23,7 @@ export interface Author {
   birth_date?: string;
 }
 
+export interface Genre {
+  id: number;
+  category: string;
+}
