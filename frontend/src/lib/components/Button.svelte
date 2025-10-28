@@ -1,9 +1,19 @@
 <script lang="ts">
-  export let primary: boolean = false;
-  export let onclick: (() => void) | undefined = undefined;
-  export let type: 'button' | 'submit' | 'reset' = 'button';
-  export let disabled: boolean = false;
-  export let icon: string = ''; // Classe Font Awesome (ex: "fa-plus")
+  let {
+    primary = false,
+    onclick = undefined,
+    type = 'button',
+    disabled = false,
+    icon = '',
+    children
+  }: {
+    primary?: boolean;
+    onclick?: (() => void) | undefined;
+    type?: 'button' | 'submit' | 'reset';
+    disabled?: boolean;
+    icon?: string;
+    children?: any;
+  } = $props();
 
   function handleClick() {
     if (!disabled) {
@@ -17,13 +27,13 @@
   class:btn--primary={primary}
   {type}
   {disabled}
-  on:click={handleClick}
+  onclick={handleClick}
 >
   {#if icon}
     <i class="fas {icon}"></i>
   {/if}
   <span class="btn__text">
-    <slot />
+    {@render children?.()}
   </span>
 </button>
 
