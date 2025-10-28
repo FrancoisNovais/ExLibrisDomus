@@ -15,3 +15,11 @@ export interface Book {
   id_author: number;
   id_genre: number;
 }
+
+export interface Author {
+  id: number;
+  first_name?: string;
+  last_name: string;
+  birth_date?: string;
+}
+
