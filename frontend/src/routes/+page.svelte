@@ -19,19 +19,9 @@
           // TODO: Logique pour ouvrir le modal d'ajout de livre
           console.log('Ajouter un livre');
         }
-      },
-      {
-        label: 'Modifier livre',
-        icon: 'fa-plus',
-        primary: false,
-        action: () => {
-          // TODO: Logique pour ouvrir le modal d'ajout de livre
-          console.log('Ajouter un livre');
-        }
       }
     ];
-
-    // Charger les données en parallèle (sans await dans onMount)
+    
     Promise.all([fetchAuthors(), fetchGenres(), fetchBooks()]);
 
       // Nettoyer les actions en quittant la page
