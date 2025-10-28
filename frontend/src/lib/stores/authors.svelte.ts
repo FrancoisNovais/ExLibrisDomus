@@ -1,4 +1,4 @@
-import { createApiStore } from '$lib/stores/createApiStore';
+import { createApiStore } from '$lib/stores/createApiStore.svelte';
 import type { Author } from '$lib/types.ts';
 
 // ✅ On réutilise le type Author du fichier global

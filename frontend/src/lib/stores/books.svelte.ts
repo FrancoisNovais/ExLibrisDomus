@@ -1,4 +1,4 @@
-import { createApiStore } from '$lib/stores/createApiStore';
+import { createApiStore } from '$lib/stores/createApiStore.svelte';
 import type { Book } from '$lib/types.ts';
 
 export const {

@@ -1,61 +1,63 @@
-import { writable, type Writable } from 'svelte/store';
 import axios from 'axios';
 
 /**
- * Interface d'un store API générique
+ * Interface d'un store API générique avec Svelte 5
  * @template T - Le type de données stockées (ex: Book, Author, Genre)
  */
 export interface ApiStore<T> {
-  data: Writable<T[]>;
-  loading: Writable<boolean>;
-  error: Writable<string | null>;
+  data: { current: T[] };
+  loading: { current: boolean };
+  error: { current: string | null };
   fetchAll: () => Promise<void>;
 }
 
 /**
  * Factory function qui crée un store générique pour gérer une ressource API
+ * Compatible Svelte 5 avec les runes $state
  * 
  * UTILISATION :
  * 
  * 1. Créer un store dédié (dans stores/authors.ts) :
  * ```typescript
- * export const {
- *   data: authors,
- *   loading: loadingAuthors,
- *   error: errorAuthors,
- *   fetchAll: fetchAuthors
- * } = createApiStore<Author>('authors');
+ * export const authorsStore = createApiStore<Author>('authors');
  * ```
  * 
  * 2. Utiliser dans un composant :
  * ```svelte
+ * <script lang="ts">
+ * import { authorsStore } from '$lib/stores/authors';
+ * 
  * onMount(async () => {
- *   await Promise.all([fetchAuthors(), fetchGenres()]);
+ *   await authorsStore.fetchAll();
  * });
+ * 
+ * // Accès aux données
+ * {authorsStore.data.current}
+ * </script>
  * ```
  * 
  * @template T - Le type de données (ex: Book, Author, Genre)
  * @param {string} endpoint - Le nom de l'endpoint API (ex: 'books', 'authors')
- * @returns {ApiStore<T>} Un objet contenant les stores et la fonction fetchAll
+ * @returns {ApiStore<T>} Un objet contenant les états réactifs et la fonction fetchAll
  */
 export function createApiStore<T>(endpoint: string): ApiStore<T> {
-  const data = writable<T[]>([]);
-  const loading = writable<boolean>(false);
-  const error = writable<string | null>(null);
+  const data = $state<{ current: T[] }>({ current: [] });
+  const loading = $state<{ current: boolean }>({ current: false });
+  const error = $state<{ current: string | null }>({ current: null });
 
   async function fetchAll() {
-    loading.set(true);
-    error.set(null);
+    loading.current = true;
+    error.current = null;
 
     try {
       const res = await axios.get(`http://localhost:4000/api/${endpoint}`, {
         headers: { Accept: 'application/json' },
       });
-      data.set(res.data);
+      data.current = res.data;
     } catch (err: any) {
-      error.set(err.message || `Failed to fetch ${endpoint}`);
+      error.current = err.message || `Failed to fetch ${endpoint}`;
     } finally {
-      loading.set(false);
+      loading.current = false;
     }
   }
 

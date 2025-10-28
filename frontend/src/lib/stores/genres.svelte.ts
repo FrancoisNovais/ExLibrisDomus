@@ -1,5 +1,5 @@
 // src/stores/genres.ts
-import { createApiStore } from '$lib/stores/createApiStore';
+import { createApiStore } from '$lib/stores/createApiStore.svelte';
 import type { Genre } from '$lib/types';
 
 export const {

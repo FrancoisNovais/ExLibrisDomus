@@ -1,6 +1,6 @@
 <script lang="ts">
   import Button from './Button.svelte';
-  import { headerActions } from '$lib/stores/headerActions';
+  import { headerActions } from '$lib/stores/headerActions.svelte';
 </script>
 
 <header class="header">
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="header__actions">
-      {#each $headerActions as action}
+      {#each headerActions.current as action}
         <Button 
           primary={action.primary} 
           icon={action.icon} 
