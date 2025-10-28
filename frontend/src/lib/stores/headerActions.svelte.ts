@@ -1,5 +1,3 @@
-import { writable } from 'svelte/store';
-
 /**
  * Type définissant une action (bouton) affichée dans le header
  * @property {string} label - Le texte affiché sur le bouton
@@ -15,26 +13,28 @@ export type HeaderAction = {
 };
 
 /**
- * Store Svelte contenant la liste des actions (boutons) à afficher dans le header
+ * Store Svelte 5 contenant la liste des actions (boutons) à afficher dans le header
  * 
  * Ce store permet à chaque page de définir ses propres boutons dans le header
  * sans avoir à passer de props à travers les composants.
  * 
  * @example
  * // Dans une page, définir les boutons du header :
- * headerActions.set([
+ * headerActions.current = [
  *   {
  *     label: 'Nouveau livre',
  *     icon: 'fa-plus',
  *     primary: true,
  *     action: () => console.log('Ajouter')
  *   }
- * ]);
+ * ];
  * 
  * @example
  * // Dans le Header.svelte, lire les actions :
- * {#each $headerActions as action}
+ * {#each headerActions.current as action}
  *   <Button {...action} />
  * {/each}
  */
-export const headerActions = writable<HeaderAction[]>([]);
+export const headerActions = $state<{ current: HeaderAction[] }>({ 
+  current: [] 
+});
