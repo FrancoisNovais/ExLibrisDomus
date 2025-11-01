@@ -11,7 +11,6 @@
 
   let { book, onEdit, onDelete }: Props = $props();
 
-  // ✅ Retirez les parenthèses - $derived retourne directement la valeur
   let authorName = $derived.by(() => {
     const author = authors.current?.find((a: Author) => a.id === book.id_author);
     return author
@@ -28,14 +27,14 @@
     Array(5).fill(false).map((_, i) => i < (book.rating || 0))
   );
 
-  function handleEdit() {
-    onEdit?.(book);
+    function handleEdit() {
+        onEdit?.(book);
   }
 
   function handleDelete() {
-    onDelete?.(book);
+      onDelete?.(book);
   }
-</script>
+ </script>
 
 <div class="book-card">
   <div class="book-card__image-container">
