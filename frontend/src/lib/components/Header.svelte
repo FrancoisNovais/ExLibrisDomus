@@ -17,6 +17,7 @@
     <div class="header__actions">
       {#each headerActions.current as action}
         <Button 
+          size="large"
           primary={action.primary} 
           icon={action.icon} 
           onclick={action.action}
@@ -51,8 +52,8 @@
   }
 
   .header__icon {
-    width: 64px;
-    height: 64px;
+    width: 58px;
+    height: 58px;
     background-color: #1c1917;
     display: flex;
     align-items: center;
@@ -73,7 +74,6 @@
     color: #78716c;
     text-transform: uppercase;
     letter-spacing: 3px;
-    margin-top: 4px;
   }
 
   .header__actions {
