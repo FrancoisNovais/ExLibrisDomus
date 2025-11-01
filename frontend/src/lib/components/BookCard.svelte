@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import type { Book, Author, Genre } from '$lib/types';
   import { authors } from '$lib/stores/authors.svelte';
   import { genres } from '$lib/stores/genres.svelte';
@@ -24,19 +25,42 @@
   });
 
   let stars = $derived(
-    Array(5).fill(false).map((_, i) => i < (book.rating || 0))
-  );
+      Array(5).fill(false).map((_, i) => i < (book.rating || 0))
+    );
 
-    function handleEdit() {
-        onEdit?.(book);
+  function handleCardClick() {
+    goto(`/books/${book.id}`);
   }
 
-  function handleDelete() {
-      onDelete?.(book);
+  function handleEdit(event: MouseEvent) {
+    event.stopPropagation();
+    onEdit?.(book);
   }
- </script>
 
-<div class="book-card">
+  function handleDelete(event: MouseEvent) {
+    event.stopPropagation();
+    onDelete?.(book);
+  }
+
+  function handleCardKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleCardClick();
+    }
+  }
+
+  function stopKeyDown(event: KeyboardEvent) {
+    event.stopPropagation();
+  }
+</script>
+
+<div
+  class="book-card"
+  onclick={handleCardClick}
+  onkeydown={handleCardKeyDown}
+  role="button"
+  tabindex="0"
+>
   <div class="book-card__image-container">
     <img
       src={book.cover || 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&h=400&fit=crop'}
@@ -49,6 +73,7 @@
       <div class="book-card__status book-card__status--to-read">À lire</div>
     {/if}
   </div>
+
   <div class="book-card__content">
     <h3 class="book-card__title">{book.title}</h3>
     <p class="book-card__author">{authorName}</p>
@@ -66,12 +91,19 @@
     {/if}
 
     <div class="book-card__actions">
-      <button class="book-card__action" onclick={handleEdit} aria-label="Modifier le livre">
+      <button
+        class="book-card__action"
+        onclick={handleEdit}
+        onkeydown={stopKeyDown}
+        aria-label="Modifier le livre"
+      >
         <i class="fas fa-edit"></i>
       </button>
+
       <button
         class="book-card__action book-card__action--delete"
         onclick={handleDelete}
+        onkeydown={stopKeyDown}
         aria-label="Supprimer le livre"
       >
         <i class="fas fa-trash"></i>
@@ -79,16 +111,19 @@
     </div>
   </div>
 </div>
+ 
 
 <style>
   .book-card {
     background-color: white;
     border: 2px solid #e7e5e4;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
   }
 
   .book-card:hover {
     border-color: #1c1917;
+    transform: translateY(-2px);
   }
 
   .book-card__image-container {
@@ -192,6 +227,8 @@
     background-color: transparent;
     cursor: pointer;
     transition: background-color 0.2s;
+    z-index: 10;
+    position: relative;
   }
 
   .book-card__action:hover {
