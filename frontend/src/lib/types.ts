@@ -27,3 +27,10 @@ export interface Genre {
   id: number;
   category: string;
 }
+
+export interface Note {
+  id: number;
+  page: number;
+  content: string;
+  id_book: number;
+}
