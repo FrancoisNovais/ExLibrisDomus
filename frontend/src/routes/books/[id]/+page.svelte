@@ -219,62 +219,64 @@
         </div>
       {/if}
       <div class="book-actions">
-          <Button icon="fa-share">Partager </Button>
           <Button icon="fa-heart"> Favoris</Button>
           <Button primary icon="fas fa-bookmark">Marquer comme lu</Button>
+          <Button icon="fa-trash" danger>Supprimer</Button>
       </div>
     </div>
   </section>
 
   <!-- Synopsis -->
-  {#if book.synopsis || editingSynopsis}
-    <section class="content-section">
-      <div class="section-header">
-        <h2 class="content-section__title">Synopsis</h2>
-        <button
-          class="edit-btn"
-          onclick={toggleSynopsis}
-          aria-label={editingSynopsis ? 'Sauvegarder le synopsis' : 'Modifier le synopsis'}
-        >
-          <i class="fas {editingSynopsis ? 'fa-save' : 'fa-edit'}"></i>
-        </button>
-      </div>
+  <section class="content-section">
+    <div class="content-section__header">
+      <h2 class="content-section__title">Synopsis</h2>
+      <button
+        class="content-section__edit-btn"
+        onclick={toggleSynopsis}
+        aria-label={editingSynopsis ? 'Sauvegarder le synopsis' : 'Modifier le synopsis'}
+        title={editingSynopsis ? 'Sauvegarder le synopsis' : 'Modifier le synopsis'}
+      >
+        <i class="fas {editingSynopsis ? 'fa-save' : 'fa-edit'}"></i>
+      </button>
+    </div>
 
-      {#if editingSynopsis}
-        <div class="edit-mode">
-          <textarea
-            bind:value={synopsisText}
-            class="content-textarea"
-            placeholder="Entrez le synopsis du livre..."
-          ></textarea>
-          <div class="edit-actions">
-            <Button size="small" onclick={cancelSynopsis}>Annuler</Button>
-            <Button size="small" primary onclick={toggleSynopsis}>Sauvegarder</Button>
-          </div>
+    {#if editingSynopsis}
+      <div class="content-section__edit">
+        <textarea
+          bind:value={synopsisText}
+          class="content-section__textarea"
+          placeholder="Entrez le synopsis du livre..."
+        ></textarea>
+        <div class="content-section__actions">
+          <Button size="small" onclick={cancelSynopsis}>Annuler</Button>
+          <Button size="small" primary onclick={toggleSynopsis}>Sauvegarder</Button>
         </div>
-      {:else}
-        <p class="content-section__text">{book.synopsis}</p>
-      {/if}
-    </section>
-  {/if}
+      </div>
+    {:else if book.synopsis}
+      <p class="content-section__text">{book.synopsis}</p>
+    {:else}
+      <p class="content-section__empty">Aucun synopsis pour ce livre.</p>
+    {/if}
+  </section>
 
   <!-- Notes -->
-  <section class="notes">
-    <div class="section-header">
-      <h2 class="notes__title">Mes Notes</h2>
-      <button class="edit-btn" aria-label="Ajouter une note" title="Ajouter une note" onclick={startAddNote}>
+  <section class="content-section">
+    <div class="content-section__header">
+      <h2 class="content-section__title">Mes Notes</h2>
+      <button class="content-section__edit-btn" aria-label="Ajouter une note" title="Ajouter une note" onclick={startAddNote}>
         <i class="fas fa-plus" aria-hidden="true"></i>
       </button>
     </div>
 
     {#if addingNote}
-      <div class="notes__item notes__item--new">
+      <div class="content-section__note content-section__note--new">
         <textarea
           bind:value={newNoteContent}
-          class="note-text-input"
+          class="content-section__textarea"
           placeholder="Votre note..."
+          style="min-height: 80px"
         ></textarea>
-        <div class="note-actions">
+        <div class="content-section__actions">
           <Button size="small" onclick={cancelAddNote}>Annuler</Button>
           <Button size="small" primary onclick={saveNewNote}>Ajouter</Button>
         </div>
@@ -282,15 +284,16 @@
     {/if}
 
     {#each bookNotes as note (note.id)}
-      <div class="notes__item">
+      <div class="content-section__note">
         {#if editingNoteId === note.id}
-          <div class="note-edit-mode">
+          <div class="content-section__edit">
             <textarea
               bind:value={editingNoteContent}
-              class="note-text-input"
+              class="content-section__textarea"
               placeholder="Votre note..."
+              style="min-height: 80px"
             ></textarea>
-            <div class="note-actions">
+            <div class="content-section__actions">
               <Button size="small" onclick={cancelEditNote}>Annuler</Button>
               <Button size="small" primary onclick={() => saveEditNote(note)}>Sauvegarder</Button>
               <Button
@@ -303,54 +306,53 @@
             </div>
           </div>
         {:else}
-          <button class="notes__item-edit" onclick={() => editNote(note)} aria-label="Modifier la note" title="Modifier la note">
+          <button class="content-section__note-edit-btn" onclick={() => editNote(note)} aria-label="Modifier la note" title="Modifier la note">
             <i class="fas fa-edit" aria-hidden="true"></i>
           </button>
-          <div class="note-view">
-            <p class="notes__text">{note.content}</p>
-          </div>
+          <p class="content-section__note-page">Page {note.page}</p>
+          <p class="content-section__text">{note.content}</p>
         {/if}
       </div>
     {/each}
 
     {#if bookNotes.length === 0 && !addingNote}
-      <p class="notes__empty">Aucune note pour ce livre.</p>
+      <p class="content-section__empty">Aucune note pour ce livre.</p>
     {/if}
   </section>
 
   <!-- Analyse -->
-  {#if book.analysis || editingAnalysis}
-    <section class="content-section">
-      <div class="section-header">
-        <h2 class="content-section__title">Mon Analyse</h2>
-        <button
-          class="edit-btn"
-          onclick={toggleAnalysis}
-          aria-label={editingAnalysis ? "Sauvegarder l'analyse" : "Modifier l'analyse"}
-          title={editingAnalysis ? "Sauvegarder l'analyse" : "Modifier l'analyse"}
-        >
-          <i class="fas {editingAnalysis ? 'fa-save' : 'fa-edit'}"></i>
-        </button>
-      </div>
+  <section class="content-section">
+    <div class="content-section__header">
+      <h2 class="content-section__title">Mon Analyse</h2>
+      <button
+        class="content-section__edit-btn"
+        onclick={toggleAnalysis}
+        aria-label={editingAnalysis ? "Sauvegarder l'analyse" : "Modifier l'analyse"}
+        title={editingAnalysis ? "Sauvegarder l'analyse" : "Modifier l'analyse"}
+      >
+        <i class="fas {editingAnalysis ? 'fa-save' : 'fa-edit'}"></i>
+      </button>
+    </div>
 
-      {#if editingAnalysis}
-        <div class="edit-mode">
-          <textarea
-            bind:value={analysisText}
-            class="content-textarea"
-            placeholder="Entrez votre analyse du livre..."
-            style="min-height: 180px"
-          ></textarea>
-          <div class="edit-actions">
-            <Button size="small" onclick={cancelAnalysis}>Annuler</Button>
-            <Button size="small" primary onclick={toggleAnalysis}>Sauvegarder</Button>
-          </div>
+    {#if editingAnalysis}
+      <div class="content-section__edit">
+        <textarea
+          bind:value={analysisText}
+          class="content-section__textarea"
+          placeholder="Entrez votre analyse du livre..."
+          style="min-height: 180px"
+        ></textarea>
+        <div class="content-section__actions">
+          <Button size="small" onclick={cancelAnalysis}>Annuler</Button>
+          <Button size="small" primary onclick={toggleAnalysis}>Sauvegarder</Button>
         </div>
-      {:else}
-        <p class="content-section__text">{book.analysis}</p>
-      {/if}
-    </section>
-  {/if}
+      </div>
+    {:else if book.analysis}
+      <p class="content-section__text">{book.analysis}</p>
+    {:else}
+      <p class="content-section__empty">Aucune analyse pour ce livre.</p>
+    {/if}
+  </section>
 {/if}
 
 <style>
@@ -499,14 +501,14 @@
       gap: 16px;
   }
 
-  .content-section, .notes {
+  .content-section {
     background-color: white;
     border: 2px solid #e7e5e4;
     padding: 32px;
     margin-bottom: 32px;
   }
 
-  .section-header {
+  .content-section__header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -515,7 +517,7 @@
     margin-bottom: 32px;
   }
 
-  .content-section__title, .notes__title {
+  .content-section__title {
     font-size: 24px;
     font-weight: bold;
     text-transform: uppercase;
@@ -523,7 +525,7 @@
     color: #1c1917;
   }
 
-  .edit-btn {
+  .content-section__edit-btn {
     background: none;
     border: none;
     color: #78716c;
@@ -533,7 +535,7 @@
     transition: color 0.2s;
   }
 
-  .edit-btn:hover {
+  .content-section__edit-btn:hover {
     color: #1c1917;
   }
 
@@ -543,12 +545,19 @@
     color: #1c1917;
   }
 
-  .edit-mode {
+  .content-section__empty {
+    font-size: 14px;
+    color: #a8a29e;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .content-section__edit {
     display: flex;
     flex-direction: column;
   }
 
-  .content-textarea {
+  .content-section__textarea {
     width: 100%;
     min-height: 120px;
     padding: 16px;
@@ -561,20 +570,20 @@
     resize: vertical;
   }
 
-  .content-textarea:focus {
+  .content-section__textarea:focus {
     outline: none;
     border-color: #1c1917;
   }
 
-  .edit-actions {
+  .content-section__actions {
     display: flex;
     gap: 8px;
     margin-top: 16px;
     justify-content: flex-end;
   }
 
-  /* Notes */
-  .notes__item {
+  /* Notes spécifiques */
+  .content-section__note {
     padding: 16px;
     background-color: #fffbeb;
     border-left: 4px solid #eab308;
@@ -582,22 +591,16 @@
     position: relative;
   }
 
-  .notes__item--new {
+  .content-section__note--new {
     background-color: #f0fdf4;
     border-left-color: #15803d;
   }
 
-  .notes__item:last-child {
+  .content-section__note:last-child {
     margin-bottom: 0;
   }
 
-  .notes__text {
-    font-size: 14px;
-    color: #1c1917;
-    line-height: 1.6;
-  }
-
-  .notes__item-edit {
+  .content-section__note-edit-btn {
     position: absolute;
     top: 8px;
     right: 8px;
@@ -610,45 +613,26 @@
     transition: color 0.2s;
   }
 
-  .notes__item-edit:hover {
+  .content-section__note-edit-btn:hover {
     color: #92400e;
   }
 
-  .note-edit-mode {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .note-text-input {
-    padding: 12px;
-    border: 2px solid #fed7aa;
+  .content-section__note .content-section__textarea {
     background-color: #fffbeb;
-    font-family: inherit;
-    font-size: 14px;
-    line-height: 1.6;
-    color: #1c1917;
-    resize: vertical;
-    min-height: 80px;
-    width: 100%;
+    border-color: #fed7aa;
   }
 
-  .note-text-input:focus {
-    outline: none;
+  .content-section__note .content-section__textarea:focus {
     border-color: #eab308;
   }
 
-  .note-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-
-  .notes__empty {
-    font-size: 14px;
-    color: #a8a29e;
-    text-align: center;
-    font-style: italic;
+  .content-section__note-page {
+    font-size: 10px;
+    color: #b45309;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-weight: bold;
   }
 
   @media (max-width: 768px) {

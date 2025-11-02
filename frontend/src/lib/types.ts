@@ -30,6 +30,7 @@ export interface Genre {
 
 export interface Note {
   id: number;
+  page: number;
   content: string;
   id_book: number;
 }
