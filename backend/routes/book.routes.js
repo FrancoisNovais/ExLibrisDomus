@@ -18,6 +18,19 @@ router.get(
 );
 
 /**
+ * GET /api/books/lookup/{isbn}
+ * @summary Récupérer les infos d'un livre via son ISBN depuis une API externe
+ * @tags Book
+ * @param {string} isbn.path.required - ISBN du livre
+ * @return {Book} 200 - Données du livre récupérées
+ * @return {object} 404 - Livre non trouvé
+ */
+router.get(
+  "/lookup/:isbn",
+  bookController.lookupByIsbn.bind(bookController)
+);
+
+/**
  * GET /api/books/{itemId}
  * @summary Récupérer un livre par son ID
  * @tags Book

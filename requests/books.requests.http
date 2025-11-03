@@ -54,3 +54,7 @@ Accept: application/json
 ### Get book by ID with full details
 GET {{baseUrl}}/books/2?include=author,genre,shelf,notes,borrows.borrower
 Accept: application/json
+
+### Get book info by ISBN
+GET /api/books/lookup/:isbn
+Accept: application/json
