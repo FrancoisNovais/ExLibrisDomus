@@ -1,30 +1,25 @@
 <script lang="ts">
   import { books, fetchBooks, loadingBooks, errorBooks } from '$lib/stores/books.svelte';
-  import { authors, fetchAuthors, loadingAuthors, errorAuthors } from '$lib/stores/authors.svelte';
-  import { genres, fetchGenres, loadingGenres, errorGenres } from '$lib/stores/genres.svelte';
   import { headerActions } from '$lib/stores/headerActions.svelte';
   import BookCard from '$lib/components/BookCard.svelte';
   import { onMount } from 'svelte';
   import { untrack } from 'svelte';
   
-  // Charger toutes les ressources en parallèle
   onMount(() => {
-    // Définir les actions du header pour cette page
     headerActions.current = [
       {
         label: 'Nouveau livre',
         icon: 'fa-plus',
         primary: true,
         action: () => {
-          // TODO: Logique pour ouvrir le modal d'ajout de livre
           console.log('Ajouter un livre');
         }
       }
     ];
     
-    Promise.all([fetchAuthors(), fetchGenres(), fetchBooks()]);
+    // Une seule requête qui récupère tout
+    fetchBooks();
 
-      // Nettoyer les actions en quittant la page
     return () => {
       untrack(() => {
         headerActions.current = [];
@@ -33,13 +28,10 @@
   });
 </script>
 
-{#if loadingBooks.current || loadingAuthors.current || loadingGenres.current}
+{#if loadingBooks.current}
   <p>Chargement...</p>
-{:else if errorBooks.current || errorAuthors.current || errorGenres.current}
-  <p class="error">
-    Erreur :
-    {errorBooks.current ?? errorAuthors.current ?? errorGenres.current}
-  </p>
+{:else if errorBooks.current}
+  <p class="error">Erreur : {errorBooks.current}</p>
 {:else}
   <div class="books-grid">
     {#each books.current as book (book.id)}

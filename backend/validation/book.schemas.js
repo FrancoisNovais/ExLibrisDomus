@@ -11,6 +11,9 @@ export const createBookSchema = Joi.object({
   synopsis: Joi.string(),
   analysis: Joi.string(),
   read: Joi.boolean(),
+  id_author: Joi.number().integer(),
+  id_shelf: Joi.number().integer(),
+  id_genre: Joi.number().integer(),
 });
 
 export const updateBookSchema = Joi.object({

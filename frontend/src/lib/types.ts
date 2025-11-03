@@ -14,6 +14,13 @@ export interface Book {
   read: boolean;
   id_author: number;
   id_genre: number;
+  id_shelf?: number;
+  // Données imbriquées via include
+  author?: Author;
+  genre?: Genre;
+  shelf?: Shelf;
+  notes?: Note[];
+  borrows?: Borrow[];
 }
 
 export interface Author {
@@ -28,9 +35,32 @@ export interface Genre {
   category: string;
 }
 
+export interface Shelf {
+  id: number;
+  label: string;
+}
+
 export interface Note {
   id: number;
   page: number;
   content: string;
   id_book: number;
+}
+
+export interface Borrow {
+  id: number;
+  status: 'ongoing' | 'returned';
+  borrow_date: string;
+  return_date: string | null;
+  id_book: number;
+  id_borrower: number;
+  borrower?: Borrower;
+}
+
+export interface Borrower {
+  id: number;
+  email: string;
+  last_name: string;
+  first_name?: string | null;
+  phone?: string | null;
 }

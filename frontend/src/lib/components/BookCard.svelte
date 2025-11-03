@@ -1,8 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import type { Book, Author, Genre } from '$lib/types';
-  import { authors } from '$lib/stores/authors.svelte';
-  import { genres } from '$lib/stores/genres.svelte';
+  import type { Book } from '$lib/types';
 
   interface Props {
     book: Book;
@@ -12,21 +10,20 @@
 
   let { book, onEdit, onDelete }: Props = $props();
 
-  let authorName = $derived.by(() => {
-    const author = authors.current?.find((a: Author) => a.id === book.id_author);
-    return author
-      ? `${author.first_name ?? ''} ${author.last_name}`.trim()
-      : 'Auteur inconnu';
-  });
+  // Les données sont directement dans book.author et book.genre
+  let authorName = $derived(
+    book.author
+      ? `${book.author.first_name ?? ''} ${book.author.last_name}`.trim()
+      : 'Auteur inconnu'
+  );
 
-  let genreName = $derived.by(() => {
-    const genre = genres.current?.find((g: Genre) => g.id === book.id_genre);
-    return genre ? genre.category : 'Genre inconnu';
-  });
+  let genreName = $derived(
+    book.genre ? book.genre.category : 'Genre inconnu'
+  );
 
   let stars = $derived(
-      Array(5).fill(false).map((_, i) => i < (book.rating || 0))
-    );
+    Array(5).fill(false).map((_, i) => i < (book.rating || 0))
+  );
 
   function handleCardClick() {
     goto(`/books/${book.id}`);
@@ -67,6 +64,7 @@
       alt={book.title}
       class="book-card__image"
     />
+    
     {#if book.read}
       <div class="book-card__status book-card__status--read">Lu</div>
     {:else}
@@ -111,7 +109,6 @@
     </div>
   </div>
 </div>
- 
 
 <style>
   .book-card {
