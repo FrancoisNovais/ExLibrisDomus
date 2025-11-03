@@ -46,3 +46,11 @@ Accept: application/json
 ### Delete a book
 DELETE {{baseUrl}}/books/12
 Accept: application/json
+
+### Get all books with full details
+GET {{baseUrl}}/books/?include=author,genre,shelf,notes,borrows.borrower
+Accept: application/json
+
+### Get book by ID with full details
+GET {{baseUrl}}/books/2?include=author,genre,shelf,notes,borrows.borrower
+Accept: application/json

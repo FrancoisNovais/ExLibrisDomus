@@ -8,7 +8,25 @@ export default class BaseController {
   }
 
   static generateInclude(includeQuery) {
-    return [];
+    if (!includeQuery) return [];
+
+    const MAX_DEPTH = 1; // profondeur maximale autorisée
+    const paths = includeQuery.split(",");
+
+    const buildInclude = (pathParts, depth = 0) => {
+      if (!pathParts.length || depth > MAX_DEPTH) return null;
+
+      const [association, ...rest] = pathParts;
+
+      return rest.length > 0
+        ? { association, include: [buildInclude(rest, depth + 1)] }
+        : { association };
+    };
+
+    // On filtre les null générés par les paths trop profonds
+    return paths
+      .map((path) => buildInclude(path.split(".")))
+      .filter(Boolean);
   }
 
   getAll = async function (req, res) {

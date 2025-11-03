@@ -1,56 +1,28 @@
 import axios from 'axios';
 
-/**
- * Interface d'un store API générique avec Svelte 5
- * @template T - Le type de données stockées (ex: Book, Author, Genre)
- */
 export interface ApiStore<T> {
   data: { current: T[] };
   loading: { current: boolean };
   error: { current: string | null };
-  fetchAll: () => Promise<void>;
+  fetchAll: (includes?: string[]) => Promise<void>;
 }
 
-/**
- * Factory function qui crée un store générique pour gérer une ressource API
- * Compatible Svelte 5 avec les runes $state
- * 
- * UTILISATION :
- * 
- * 1. Créer un store dédié (dans stores/authors.ts) :
- * ```typescript
- * export const authorsStore = createApiStore<Author>('authors');
- * ```
- * 
- * 2. Utiliser dans un composant :
- * ```svelte
- * <script lang="ts">
- * import { authorsStore } from '$lib/stores/authors';
- * 
- * onMount(async () => {
- *   await authorsStore.fetchAll();
- * });
- * 
- * // Accès aux données
- * {authorsStore.data.current}
- * </script>
- * ```
- * 
- * @template T - Le type de données (ex: Book, Author, Genre)
- * @param {string} endpoint - Le nom de l'endpoint API (ex: 'books', 'authors')
- * @returns {ApiStore<T>} Un objet contenant les états réactifs et la fonction fetchAll
- */
 export function createApiStore<T>(endpoint: string): ApiStore<T> {
   const data = $state<{ current: T[] }>({ current: [] });
   const loading = $state<{ current: boolean }>({ current: false });
   const error = $state<{ current: string | null }>({ current: null });
 
-  async function fetchAll() {
+  async function fetchAll(includes?: string[]) {
     loading.current = true;
     error.current = null;
 
     try {
-      const res = await axios.get(`http://localhost:4000/api/${endpoint}`, {
+      const url = new URL(`http://localhost:4000/api/${endpoint}`);
+      if (includes && includes.length > 0) {
+        url.searchParams.set('include', includes.join(','));
+      }
+
+      const res = await axios.get(url.toString(), {
         headers: { Accept: 'application/json' },
       });
       data.current = res.data;

@@ -3,9 +3,6 @@
   import { goto } from '$app/navigation';
   import type { Book, Note } from '$lib/types';
   import { books, fetchBooks } from '$lib/stores/books.svelte';
-  import { authors, fetchAuthors } from '$lib/stores/authors.svelte';
-  import { fetchGenres, genres } from '$lib/stores/genres.svelte';
-  import { notes, fetchNotes } from '$lib/stores/notes.svelte';
   import { headerActions } from '$lib/stores/headerActions.svelte';
   import Button from '$lib/components/Button.svelte';
   import { onMount } from 'svelte';
@@ -17,17 +14,23 @@
   // Trouver le livre correspondant
   let book = $derived(books.current.find((b: Book) => b.id === bookId));
 
-  // Auteur et genre
-  let author = $derived(authors.current.find(a => a.id === book?.id_author));
-  let genre = $derived(genres.current.find(g => g.id === book?.id_genre));
-
+  // Les données sont maintenant directement dans book grâce aux includes
   let authorName = $derived(
-    author ? `${author.first_name ?? ''} ${author.last_name}`.trim() : 'Auteur inconnu'
+    book?.author
+      ? `${book.author.first_name ?? ''} ${book.author.last_name}`.trim()
+      : 'Auteur inconnu'
   );
-  let genreName = $derived(genre ? genre.category : 'Genre inconnu');
+  let genreName = $derived(book?.genre ? book.genre.category : 'Genre inconnu');
+  let shelfLabel = $derived(book?.shelf?.label || null);
 
-  // Notes du livre
-  let bookNotes = $derived(notes.current.filter((n: Note) => n.id_book === bookId));
+  // Vérifier si le livre est actuellement emprunté
+  let currentBorrow = $derived(
+    book?.borrows?.find(b => b.status === 'ongoing')
+  );
+  let isBorrowed = $derived(!!currentBorrow);
+
+  // Les notes sont maintenant directement dans book.notes !
+  let bookNotes = $derived(book?.notes || []);
 
   // États pour l'édition
   let editingSynopsis = $state(false);
@@ -40,13 +43,14 @@
   let editingNoteContent = $state('');
   let addingNote = $state(false);
   let newNoteContent = $state('');
+  let newNotePage = $state(1);
 
   // Étoiles
   let stars = $derived(Array(5).fill(false).map((_, i) => i < (book?.rating || 0)));
 
   onMount(() => {
-    // Charger les notes
-    Promise.all([fetchAuthors(), fetchGenres(), fetchBooks(), fetchNotes()]);
+    // Une seule requête avec tous les includes !
+    fetchBooks();
 
     // Définir les actions du header pour cette page
     headerActions.current = [
@@ -61,7 +65,6 @@
         icon: 'fa-edit',
         primary: true,
         action: () => {
-          // TODO: Ouvrir modal d'édition
           console.log('Modifier le livre');
         }
       }
@@ -118,19 +121,20 @@
   // Gestion des notes
   function startAddNote() {
     newNoteContent = '';
+    newNotePage = 1;
     addingNote = true;
   }
 
   function cancelAddNote() {
     newNoteContent = '';
+    newNotePage = 1;
     addingNote = false;
   }
 
   function saveNewNote() {
     if (newNoteContent.trim() && book) {
-      // TODO: Envoyer au backend
-      console.log('Ajouter note:', newNoteContent);
-      // notes.current.push({ id: Date.now(), content: newNoteContent, id_book: book.id });
+      console.log('Ajouter note:', { page: newNotePage, content: newNoteContent });
+      // TODO: Envoyer au backend et rafraîchir
       cancelAddNote();
     }
   }
@@ -147,18 +151,23 @@
 
   function saveEditNote(note: Note) {
     if (editingNoteContent.trim()) {
-      // TODO: Envoyer au backend
       console.log('Modifier note:', editingNoteContent);
       note.content = editingNoteContent;
+      // TODO: Envoyer au backend
       cancelEditNote();
     }
   }
 
   function deleteNote(noteId: number) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette note ?')) {
-      // TODO: Envoyer au backend
       console.log('Supprimer note:', noteId);
+      // TODO: Envoyer au backend et rafraîchir
     }
+  }
+
+  function formatDate(dateString: string | null | undefined): string {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString('fr-FR');
   }
 </script>
 
@@ -176,7 +185,9 @@
         alt={book.title}
         class="book-cover__image"
       />
-      {#if book.read}
+      {#if isBorrowed}
+        <div class="book-status book-status--borrowed">Emprunté</div>
+      {:else if book.read}
         <div class="book-status book-status--read">Lu</div>
       {:else}
         <div class="book-status book-status--to-read">À lire</div>
@@ -206,6 +217,12 @@
             <span class="book-meta__value">{book.language}</span>
           </div>
         {/if}
+        {#if shelfLabel}
+          <div class="book-meta__item">
+            <span class="book-meta__label">Étagère</span>
+            <span class="book-meta__value">{shelfLabel}</span>
+          </div>
+        {/if}
       </div>
 
       {#if book.rating && book.rating > 0}
@@ -218,10 +235,61 @@
           <span class="book-rating__text">{book.rating}/5</span>
         </div>
       {/if}
+
+      <!-- Informations d'emprunt -->
+      {#if isBorrowed && currentBorrow}
+        <div class="borrow-info">
+          <div class="borrow-info__header">
+            <i class="fas fa-user-clock"></i>
+            <span>Actuellement emprunté</span>
+          </div>
+          <div class="borrow-info__details">
+            <div class="borrow-info__item">
+              <span class="borrow-info__label">Emprunteur</span>
+              <span class="borrow-info__value">
+                {currentBorrow.borrower?.first_name || ''} {currentBorrow.borrower?.last_name || 'Inconnu'}
+              </span>
+            </div>
+            {#if currentBorrow.borrower?.email}
+              <div class="borrow-info__item">
+                <span class="borrow-info__label">Email</span>
+                <span class="borrow-info__value">{currentBorrow.borrower.email}</span>
+              </div>
+            {/if}
+            <div class="borrow-info__item">
+              <span class="borrow-info__label">Date d'emprunt</span>
+              <span class="borrow-info__value">{formatDate(currentBorrow.borrow_date)}</span>
+            </div>
+          </div>
+        </div>
+      {/if}
+
+      <!-- Historique des emprunts passés -->
+      {#if book.borrows && book.borrows.filter(b => b.status === 'returned').length > 0}
+        <details class="borrow-history">
+          <summary class="borrow-history__summary">
+            <i class="fas fa-history"></i>
+            Historique des emprunts ({book.borrows.filter(b => b.status === 'returned').length})
+          </summary>
+          <div class="borrow-history__list">
+            {#each book.borrows.filter(b => b.status === 'returned') as borrow}
+              <div class="borrow-history__item">
+                <span class="borrow-history__borrower">
+                  {borrow.borrower?.first_name || ''} {borrow.borrower?.last_name || 'Inconnu'}
+                </span>
+                <span class="borrow-history__dates">
+                  {formatDate(borrow.borrow_date)} → {formatDate(borrow.return_date)}
+                </span>
+              </div>
+            {/each}
+          </div>
+        </details>
+      {/if}
+
       <div class="book-actions">
-          <Button icon="fa-heart"> Favoris</Button>
-          <Button primary icon="fas fa-bookmark">Marquer comme lu</Button>
-          <Button icon="fa-trash" danger>Supprimer</Button>
+        <Button icon="fa-heart">Favoris</Button>
+        <Button primary icon="fas fa-bookmark">Marquer comme lu</Button>
+        <Button icon="fa-trash" danger>Supprimer</Button>
       </div>
     </div>
   </section>
@@ -270,6 +338,17 @@
 
     {#if addingNote}
       <div class="content-section__note content-section__note--new">
+        <div class="note-page-input">
+          <label for="note-page">Page</label>
+          <input
+            id="note-page"
+            type="number"
+            bind:value={newNotePage}
+            min="1"
+            max={book.pages}
+            class="note-page-field"
+          />
+        </div>
         <textarea
           bind:value={newNoteContent}
           class="content-section__textarea"
@@ -297,7 +376,7 @@
               <Button size="small" onclick={cancelEditNote}>Annuler</Button>
               <Button size="small" primary onclick={() => saveEditNote(note)}>Sauvegarder</Button>
               <Button
-              size="small" 
+                size="small" 
                 danger icon="fa-trash"
                 onclick={() => deleteNote(note.id)}
               >
@@ -416,6 +495,12 @@
     border-color: #e2e8f0;
   }
 
+  .book-status--borrowed {
+    background-color: #fef3c7;
+    color: #92400e;
+    border-color: #fde68a;
+  }
+
   .book-info {
     display: flex;
     flex-direction: column;
@@ -496,9 +581,102 @@
     letter-spacing: 2px;
   }
 
+  /* Informations d'emprunt */
+  .borrow-info {
+    background-color: #fef3c7;
+    border: 2px solid #fde68a;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .borrow-info__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #92400e;
+    margin-bottom: 12px;
+  }
+
+  .borrow-info__details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .borrow-info__item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .borrow-info__label {
+    color: #78716c;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+  }
+
+  .borrow-info__value {
+    color: #1c1917;
+    font-weight: bold;
+  }
+
+  /* Historique des emprunts */
+  .borrow-history {
+    background-color: #f5f5f4;
+    border: 2px solid #e7e5e4;
+    padding: 12px;
+    margin-bottom: 24px;
+  }
+
+  .borrow-history__summary {
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #78716c;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .borrow-history__summary:hover {
+    color: #1c1917;
+  }
+
+  .borrow-history__list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .borrow-history__item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background-color: white;
+    border: 1px solid #e7e5e4;
+    font-size: 11px;
+  }
+
+  .borrow-history__borrower {
+    font-weight: bold;
+    color: #1c1917;
+  }
+
+  .borrow-history__dates {
+    color: #78716c;
+  }
+
   .book-actions {
-      display: flex;
-      gap: 16px;
+    display: flex;
+    gap: 16px;
   }
 
   .content-section {
@@ -582,7 +760,6 @@
     justify-content: flex-end;
   }
 
-  /* Notes spécifiques */
   .content-section__note {
     padding: 16px;
     background-color: #fffbeb;
@@ -635,6 +812,36 @@
     font-weight: bold;
   }
 
+  .note-page-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .note-page-input label {
+    font-size: 11px;
+    color: #78716c;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+  }
+
+  .note-page-field {
+    width: 80px;
+    padding: 4px 8px;
+    border: 2px solid #e7e5e4;
+    background-color: white;
+    font-family: inherit;
+    font-size: 12px;
+    color: #1c1917;
+  }
+
+  .note-page-field:focus {
+    outline: none;
+    border-color: #15803d;
+  }
+
   @media (max-width: 768px) {
     .book-header {
       grid-template-columns: 1fr;
@@ -659,6 +866,11 @@
 
     .book-meta {
       justify-content: center;
+    }
+
+    .borrow-info__item {
+      flex-direction: column;
+      gap: 4px;
     }
   }
 </style>
