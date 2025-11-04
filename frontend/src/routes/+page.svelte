@@ -2,8 +2,11 @@
   import { books, fetchBooks, loadingBooks, errorBooks } from '$lib/stores/books.svelte';
   import { headerActions } from '$lib/stores/headerActions.svelte';
   import BookCard from '$lib/components/BookCard.svelte';
+  import AddBookModal from '$lib/components/AddBookModal.svelte';
   import { onMount } from 'svelte';
   import { untrack } from 'svelte';
+  
+  let showAddModal = $state(false);
   
   onMount(() => {
     headerActions.current = [
@@ -12,12 +15,11 @@
         icon: 'fa-plus',
         primary: true,
         action: () => {
-          console.log('Ajouter un livre');
+          showAddModal = true;
         }
       }
     ];
     
-    // Une seule requête qui récupère tout
     fetchBooks();
 
     return () => {
@@ -39,6 +41,11 @@
     {/each}
   </div>
 {/if}
+
+<AddBookModal 
+  isOpen={showAddModal} 
+  onClose={() => showAddModal = false} 
+/>
 
 <style>
   .books-grid {
