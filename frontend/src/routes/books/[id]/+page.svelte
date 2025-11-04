@@ -460,7 +460,6 @@
 
   .book-cover__image {
     width: 100%;
-    height: 450px;
     object-fit: cover;
     border: 2px solid #e7e5e4;
     filter: grayscale(100%);
