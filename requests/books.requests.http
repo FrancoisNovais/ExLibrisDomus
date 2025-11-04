@@ -56,5 +56,23 @@ GET {{baseUrl}}/books/2?include=author,genre,shelf,notes,borrows.borrower
 Accept: application/json
 
 ### Get book info by ISBN
-GET /api/books/lookup/:isbn
+GET {{baseUrl}}/books/lookup/:isbn
 Accept: application/json
+
+
+### Create a new book with author and genre
+POST {{baseUrl}}/books/advanced
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "The Fellowship of the Ring",
+  "year": 1954,
+  "pages": 423,
+  "author": {
+    "first_name": "J.R.R.",
+    "last_name": "Tolkien"
+  },
+  "genre": "Fantasy",
+  "cover": "https://covers.openlibrary.org/b/isbn/9780261103573-L.jpg"
+}

@@ -19,6 +19,29 @@ import { DataTypes, Model } from "sequelize";
  * @property {integer} id_genre - Foreign key referencing the genre
  */
 
+/**
+ * @typedef {object} BookAdvanced
+ * @property {string} title.required - Titre du livre
+ * @property {integer} year - Année de publication
+ * @property {integer} pages - Nombre de pages
+ * @property {string} language - Langue du livre
+ * @property {integer} rating - Note du livre
+ * @property {string} cover - URL de la couverture
+ * @property {boolean} favorite - Livre favori
+ * @property {string} synopsis - Synopsis du livre
+ * @property {string} analysis - Analyse ou commentaire
+ * @property {boolean} read - Lu ou non
+ * @property {integer} [id_author] - ID auteur existant
+ * @property {object} [author] - Auteur à créer si id_author non fourni
+ * @property {string} author.first_name - Prénom de l'auteur
+ * @property {string} author.last_name - Nom de l'auteur
+ * @property {string} [author.birth_date] - Date de naissance
+ * @property {integer} [id_genre] - ID genre existant
+ * @property {string} [genre] - Nom du genre à créer si id_genre non fourni
+ * @property {integer} [id_shelf] - ID étagère
+ */
+
+
 class Book extends Model {}
 
 Book.init(

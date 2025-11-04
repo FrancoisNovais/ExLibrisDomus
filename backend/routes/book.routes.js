@@ -2,7 +2,11 @@ import { Router } from "express";
 import bookController from "../controllers/book.controller.js";
 import { paramsSchema } from "../validation/global.schemas.js";
 import validateSchema from "../middlewares/validate.js";
-import { createBookSchema, updateBookSchema } from "../validation/book.schemas.js"
+import { 
+  createBookSchema, 
+  createBookAdvancedSchema, 
+  updateBookSchema 
+} from "../validation/book.schemas.js";
 
 const router = Router();
 
@@ -15,6 +19,40 @@ const router = Router();
 router.get(
   "/",
   bookController.getAll.bind(bookController)
+);
+
+/**
+ * POST /api/books/advanced
+ * @summary Créer un nouveau livre (avancé - avec création auteur/genre)
+ * @tags Book
+ * @param {BookAdvanced} request.body.required - Données du livre avec auteur/genre inline
+ * @return {Book} 201 - Livre créé avec toutes les relations
+ * @return {object} 400 - Erreur de validation
+ * @example request - Exemple avec nouvel auteur et nouveau genre
+ * {
+ *   "title": "The Fellowship of the Ring",
+ *   "year": 1954,
+ *   "pages": 423,
+ *   "author": {
+ *     "first_name": "J.R.R.",
+ *     "last_name": "Tolkien"
+ *   },
+ *   "genre": "Fantasy",
+ *   "cover": "https://covers.openlibrary.org/b/isbn/9780261103573-L.jpg"
+ * }
+ * @example request - Exemple avec IDs existants
+ * {
+ *   "title": "1984",
+ *   "year": 1949,
+ *   "id_author": 5,
+ *   "id_genre": 2,
+ *   "id_shelf": 1
+ * }
+ */
+router.post(
+  "/advanced",
+  validateSchema(createBookAdvancedSchema, "body"),
+  bookController.createAdvanced.bind(bookController)
 );
 
 /**
